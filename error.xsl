@@ -11,11 +11,11 @@
         <xsl:sequence select="b:error(.,'Frame contains junk')"/>
     </xsl:template>
 
-    <xsl:template match="b:spare[@throw = '1']" mode="error">
+    <xsl:template match="b:spare[@throw = '1']" mode="error" priority="3">
         <xsl:sequence select="b:error(.,'Not possbile to get a spare on the first throw')"/>
     </xsl:template>
 
-    <xsl:template match="b:strike[@throw='2']" mode="error">
+    <xsl:template match="b:strike[@throw='2']" mode="error" priority="3">
         <xsl:sequence select="b:error(.,'Not possbile to get a strike on the second throw')"/>
     </xsl:template>
 
@@ -23,15 +23,26 @@
         <xsl:sequence select="b:error(.,'Too many frames: this frame is unnessesary')"/>
     </xsl:template>
 
-    <xsl:template match="b:*[@frame = '11']" mode="error">
-        <xsl:if test="not(local-name(preceding-sibling::element()[1]) = ('spare','strke'))">
-            <xsl:sequence select="b:error(.,'Too many frames: 11th frame only valid if 10th is a spare or strike')"/>
+    <xsl:template match="b:*[@frame = '11' and @throw = '1']" mode="error">
+        <xsl:variable name="ten-throw-one" as="xs:string" select="local-name(preceding-sibling::element()[@frame='10' and @throw='1'])"/>
+        <xsl:variable name="ten-throw-two" as="xs:string" select="local-name(preceding-sibling::element()[@frame='10' and @throw='2'])"/>
+        <xsl:if test="($ten-throw-one != 'strike') and ($ten-throw-two != 'spare')">
+            <xsl:sequence select="b:error(.,'Too many frames: the 11th frame is only valid if the 10th frame contains a spare or strike')"/>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="b:*[@frame = '11' and @throw = '2']" mode="error">
+        <xsl:variable name="ten-throw-one" as="xs:string" select="local-name(preceding-sibling::element()[@frame='10' and @throw='1'])"/>
+        <xsl:if test="$ten-throw-one != 'strike'">
+            <xsl:sequence select="b:error(.,'Too many frames: the 11th frame, throw 2 is only valid if the 10th frame is a strike')"/>
         </xsl:if>
     </xsl:template>
 
     <xsl:template match="b:*[@frame = '12']" mode="error">
-        <xsl:if test="not(local-name(preceding-sibling::element()[2]) = 'strke')">
-            <xsl:sequence select="b:error(.,'Too many frames: 12th frame only valid if 10th is a strike')"/>
+        <xsl:variable name="ten-throw-one" as="xs:string" select="local-name(preceding-sibling::element()[@frame='10' and @throw='1'])"/>
+        <xsl:variable name="eleven-throw-one" as="xs:string" select="local-name(preceding-sibling::element()[@frame='11' and @throw='1'])"/>
+        <xsl:if test="($ten-throw-one != 'strike') or ($eleven-throw-one != 'strike')">
+            <xsl:sequence select="b:error(.,'Too many frames: the 12th frame is only valid if 10th and 11th frames are strikes')"/>
         </xsl:if>
     </xsl:template>
 
