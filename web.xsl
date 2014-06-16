@@ -15,7 +15,7 @@
     </xsl:template>
 
     <xsl:template match="html:input" mode="ixsl:onkeyup">
-        <xsl:variable name="frames" as="node()" select="b:tokenize(@prop:value)"/>
+        <xsl:variable name="frames" as="node()?" select="if (@prop:value != '') then b:tokenize(@prop:value) else ()"/>
         <xsl:variable name="errors" as="node()*" select="b:check-errors($frames)"/>
         <xsl:choose>
             <xsl:when test="empty($errors)">

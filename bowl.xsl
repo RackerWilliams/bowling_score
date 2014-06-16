@@ -3,7 +3,7 @@
                 xmlns:b="http://www.rackspace.com/xml/rocks/bowling" version="2.0">
     
     <xsl:function name="b:calculate-score" as="xs:integer">
-        <xsl:param name="frame-tokens" as="node()"/>
+        <xsl:param name="frame-tokens" as="node()?"/>
         <xsl:variable name="scores" as="xs:integer*">
             <xsl:apply-templates select="$frame-tokens"/>
             <xsl:apply-templates select="$frame-tokens" mode="bonus"/>
