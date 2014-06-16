@@ -8,12 +8,6 @@
     <xsl:include href="bowl.xsl"/>
     <xsl:include href="error.xsl"/>
 
-    <xsl:template name="init">
-        <xsl:result-document href="#errors" method="ixsl:replace-content"/>
-        <xsl:result-document href="#frames" method="ixsl:replace-content"/>
-        <xsl:result-document href="#score" method="ixsl:replace-content"/>
-    </xsl:template>
-
     <xsl:template match="html:input" mode="ixsl:onkeyup">
         <xsl:variable name="frames" as="node()?" select="if (@prop:value != '') then b:tokenize(@prop:value) else ()"/>
         <xsl:variable name="errors" as="node()*" select="b:check-errors($frames)"/>

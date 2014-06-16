@@ -5,8 +5,15 @@
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
         <script type="text/javascript" language="javascript"
                         src="Saxonce/Saxonce.nocache.js"></script>
-        <script type="application/xslt+xml" language="xslt2.0"
-            src="web.xsl" data-initial-template="init"></script>
+        <script type="text/javascript" language="javascript">
+                    var onSaxonLoad = function() {
+                        Saxon.run( {
+                             source:     location.href,
+                             logLevel:   "SEVERE",
+                             stylesheet: "web.xsl"
+                        });
+                    }
+        </script>
     </head>
     <body>
         <form action="">
