@@ -8,7 +8,7 @@
     <xsl:include href="bowl.xsl"/>
     <xsl:include href="error.xsl"/>
 
-    <xsl:template match="html:input" mode="ixsl:onkeyup">
+    <xsl:template match="html:input" mode="ixsl:onkeyup ixsl:onchange">
         <xsl:variable name="frames" as="node()?" select="if (@prop:value != '') then b:tokenize(@prop:value) else ()"/>
         <xsl:variable name="errors" as="node()*" select="b:check-errors($frames)"/>
         <xsl:choose>
